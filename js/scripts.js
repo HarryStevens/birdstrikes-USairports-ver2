@@ -1,66 +1,61 @@
 /**
  * @author Harry Stevens
  */
+
+var map;
+var layer_0;
 function initialize() {
-	google.maps.visualRefresh = true;
 	var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) || (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
 	if (isMobile) {
 		var viewport = document.querySelector("meta[name=viewport]");
 		viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
 	}
 
-	var mapDiv = document.getElementById('googft-mapCanvas');
+	var mapDiv = document.getElementById('map-canvas');
 	mapDiv.style.width = isMobile ? '100%' : '800px';
 	mapDiv.style.height = isMobile ? '100%' : '500px';
 
-	//Styles the map
-	var mapOptions = {
-		center : new google.maps.LatLng(37, -95),
-		zoom : 4,
-		mapTypeId : google.maps.MapTypeId.ROADMAP,
-		draggable : true,
-		zoomable : false,
-		scrollwheel : true,
-		pancontrol: false,
-		disableDoubleClickZoom : false
-	};
-
-	var map = new google.maps.Map(mapDiv, mapOptions);
-	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
-	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
-
-	layer = new google.maps.FusionTablesLayer({
+	map = new google.maps.Map(mapDiv, {
+		center : new google.maps.LatLng(36.58072594811134, -95.03431384999999),
+		zoom : 4
+	});
+	var style = [{
+		featureType : 'all',
+		elementType : 'all',
+		stylers : [{
+			saturation : -47
+		}]
+	}];
+	var styledMapType = new google.maps.StyledMapType(style, {
 		map : map,
-		heatmap : {
-			enabled : false
+		name : 'Styled Map'
+	});
+	map.mapTypes.set('map-style', styledMapType);
+	map.setMapTypeId('map-style');
+	layer_0 = new google.maps.FusionTablesLayer({
+		query : {
+			select : "col10",
+			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu"
 		},
+		map : map,
+		styleId : 3,
+		templateId : 4
+	});
+}
+
+function changeMap_city() {
+	var whereClause;
+	var searchString = document.getElementById('search-string_0').value.replace(/'/g, "\\'");
+	if (searchString != '--Select--') {
+		whereClause = "'City' = '" + searchString + "'";
+	}
+	layer_0.setOptions({
 		query : {
 			select : "col10",
 			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
-			where : ""
-		},
-		options : {
-			styleId : 3,
-			templateId : 4
+			where : whereClause
 		}
 	});
-
-	if (isMobile) {
-		var legend = document.getElementById('googft-legend');
-		var legendOpenButton = document.getElementById('googft-legend-open');
-		var legendCloseButton = document.getElementById('googft-legend-close');
-		legend.style.display = 'none';
-		legendOpenButton.style.display = 'block';
-		legendCloseButton.style.display = 'block';
-		legendOpenButton.onclick = function() {
-			legend.style.display = 'block';
-			legendOpenButton.style.display = 'none';
-		}
-		legendCloseButton.onclick = function() {
-			legend.style.display = 'none';
-			legendOpenButton.style.display = 'block';
-		}
-	}
 }
 
 google.maps.event.addDomListener(window, 'load', initialize);
