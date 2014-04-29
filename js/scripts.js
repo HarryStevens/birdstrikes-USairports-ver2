@@ -19,11 +19,13 @@ function initialize() {
 		center : new google.maps.LatLng(36.58072594811134, -95.03431384999999),
 		zoom : 4
 	});
+	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
+	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
 	var style = [{
 		featureType : 'all',
 		elementType : 'all',
 		stylers : [{
-			saturation : -47
+			saturation : -60
 		}]
 	}];
 	var styledMapType = new google.maps.StyledMapType(style, {
@@ -45,9 +47,39 @@ function initialize() {
 
 function changeMap_city() {
 	var whereClause;
-	var searchString = document.getElementById('search-string_0').value.replace(/'/g, "\\'");
+	var searchString = document.getElementById('search-string_city').value.replace(/'/g, "\\'");
 	if (searchString != '--Select--') {
 		whereClause = "'City' = '" + searchString + "'";
+	}
+	layer_0.setOptions({
+		query : {
+			select : "col10",
+			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+			where : whereClause
+		}
+	});
+}
+
+function changeMap_level() {
+	var whereClause;
+	var searchString = document.getElementById('search-string_level').value.replace(/'/g, "\\'");
+	if (searchString != '--Select--') {
+		whereClause = "'Birdstrike_Rating' = '" + searchString + "'";
+	}
+	layer_0.setOptions({
+		query : {
+			select : "col10",
+			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+			where : whereClause
+		}
+	});
+}
+
+function changeMap_state() {
+	var whereClause;
+	var searchString = document.getElementById('search-string_state').value.replace(/'/g, "\\'");
+	if (searchString != '--Select--') {
+		whereClause = "'State' = '" + searchString + "'";
 	}
 	layer_0.setOptions({
 		query : {
