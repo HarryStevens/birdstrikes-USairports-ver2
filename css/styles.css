@@ -5,6 +5,7 @@ body {
 h1 {
 	text-align: center;
 	font-size: 30px;
+	margin-top: 8px;
 }
 td {
 	padding-right: 8px;
