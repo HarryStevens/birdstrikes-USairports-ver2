@@ -2,25 +2,36 @@
  * @author Harry Stevens
  */
 
+//Global variables
 var map;
 var layer_0;
+
+//This function is called when map stuff is loaded
 function initialize() {
+	
+	//For case where map is mobile. Taken straight from Google Fusion tables publish tab.
 	var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) || (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
 	if (isMobile) {
 		var viewport = document.querySelector("meta[name=viewport]");
 		viewport.setAttribute('content', 'initial-scale=1.0, user-scalable=no');
 	}
 
+	//Styles the div map-canvas where the map will display
 	var mapDiv = document.getElementById('map-canvas');
 	mapDiv.style.width = isMobile ? '100%' : '800px';
 	mapDiv.style.height = isMobile ? '100%' : '500px';
 
+	//Updates global var map with info about the div style and additional options for zoom and lat long center
 	map = new google.maps.Map(mapDiv, {
 		center : new google.maps.LatLng(36.58072594811134, -95.03431384999999),
 		zoom : 4
 	});
+	
+	//Places legend on map
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
+	
+	//Styles map to reduce saturation
 	var style = [{
 		featureType : 'all',
 		elementType : 'all',
@@ -34,6 +45,8 @@ function initialize() {
 	});
 	map.mapTypes.set('map-style', styledMapType);
 	map.setMapTypeId('map-style');
+	
+	//Creates functionality for updating map based on user inputs
 	layer_0 = new google.maps.FusionTablesLayer({
 		query : {
 			select : "col10",
@@ -45,6 +58,7 @@ function initialize() {
 	});
 }
 
+//Updates map based on city selection
 function changeMap_city() {
 	var whereClause;
 	var searchString = document.getElementById('search-string_city').value.replace(/'/g, "\\'");
@@ -60,6 +74,7 @@ function changeMap_city() {
 	});
 }
 
+//Updates map based on level selection
 function changeMap_level() {
 	var whereClause;
 	var searchString = document.getElementById('search-string_level').value.replace(/'/g, "\\'");
@@ -75,6 +90,7 @@ function changeMap_level() {
 	});
 }
 
+//Updates map based on state selection
 function changeMap_state() {
 	var whereClause;
 	var searchString = document.getElementById('search-string_state').value.replace(/'/g, "\\'");
@@ -90,4 +106,5 @@ function changeMap_state() {
 	});
 }
 
+//This is like document ready but without jQuery
 google.maps.event.addDomListener(window, 'load', initialize);
