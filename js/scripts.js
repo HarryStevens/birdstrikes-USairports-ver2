@@ -46,7 +46,7 @@ function initialize() {
 	map.mapTypes.set('map-style', styledMapType);
 	map.setMapTypeId('map-style');
 
-	//Creates functionality for updating map based on user inputs
+	//Creates functionality for updating map based on user inputs. The var whereClause will update the query string to pull certain data from the Fusion Tables
 	layer_0 = new google.maps.FusionTablesLayer({
 		query : {
 			select : "col10",
