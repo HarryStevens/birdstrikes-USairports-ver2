@@ -7,7 +7,7 @@ var map;
 var layer_0;
 
 //This function is called when map stuff is loaded
-function initialize() {
+function initializeMap() {
 
 	//For case where map is mobile. Taken straight from Google Fusion tables publish tab.
 	var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) || (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
@@ -31,12 +31,42 @@ function initialize() {
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
 
-	//Styles map to reduce saturation
+	//Styles map to reduce saturation and remove unnecessary elements
 	var style = [{
-		featureType : 'all',
+		featureType : 'land',
 		elementType : 'all',
 		stylers : [{
-			saturation : -60
+			saturation : -80
+		}]
+	},  {
+		featureType : 'road.arterial',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
+		}]
+	}, {
+		featureType : 'road.local',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
+		}]
+	}, {
+		featureType : 'administrative.neighborhood',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
+		}]
+	}, {
+		featureType : 'administrative.land_parcel',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
+		}]
+	}, {
+		featureType : 'poi',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
 		}]
 	}];
 	var styledMapType = new google.maps.StyledMapType(style, {
@@ -106,5 +136,37 @@ function changeMap_state() {
 	});
 }
 
-//This is like document ready but without jQuery
-google.maps.event.addDomListener(window, 'load', initialize);
+//Updates map based on service area selection
+function changeMap_area() {
+	var whereClause;
+	var searchString = document.getElementById('search-string_area').value.replace(/'/g, "\\'");
+	if (searchString != '--Select--') {
+		whereClause = "'Service Area' = '" + searchString + "'";
+	}
+	layer_0.setOptions({
+		query : {
+			select : "col10",
+			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+			where : whereClause
+		}
+	});
+}
+
+//Updates map based on region selection
+function changeMap_region() {
+	var whereClause;
+	var searchString = document.getElementById('search-string_region').value.replace(/'/g, "\\'");
+	if (searchString != '--Select--') {
+		whereClause = "'Region' = '" + searchString + "'";
+	}
+	layer_0.setOptions({
+		query : {
+			select : "col10",
+			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+			where : whereClause
+		}
+	});
+}
+
+//This is similar to document ready (though not identical) and does not use jQuery
+google.maps.event.addDomListener(window, 'load', initializeMap);
