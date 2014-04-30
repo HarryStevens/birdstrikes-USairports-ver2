@@ -8,7 +8,7 @@ var layer_0;
 
 //This function is called when map stuff is loaded
 function initialize() {
-	
+
 	//For case where map is mobile. Taken straight from Google Fusion tables publish tab.
 	var isMobile = (navigator.userAgent.toLowerCase().indexOf('android') > -1) || (navigator.userAgent.match(/(iPod|iPhone|iPad|BlackBerry|Windows Phone|iemobile)/));
 	if (isMobile) {
@@ -26,11 +26,11 @@ function initialize() {
 		center : new google.maps.LatLng(36.58072594811134, -95.03431384999999),
 		zoom : 4
 	});
-	
+
 	//Places legend on map
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
 	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
-	
+
 	//Styles map to reduce saturation
 	var style = [{
 		featureType : 'all',
@@ -45,7 +45,7 @@ function initialize() {
 	});
 	map.mapTypes.set('map-style', styledMapType);
 	map.setMapTypeId('map-style');
-	
+
 	//Creates functionality for updating map based on user inputs
 	layer_0 = new google.maps.FusionTablesLayer({
 		query : {
