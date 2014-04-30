@@ -28,8 +28,8 @@ function initializeMap() {
 	});
 
 	//Places legend on map
-	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
-	map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
+	//map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
+	//map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
 
 	//Styles map to reduce saturation and remove unnecessary elements
 	var style = [{
