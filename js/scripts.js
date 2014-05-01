@@ -115,6 +115,8 @@ function changeMap_state() {
 	if (searchString != '--Select--') {
 		whereClause = "'State' = '" + searchString + "'";
 		stateName = $( "#search-string_state option:selected" ).text();
+		
+		//Trying to get state locations to update dynamically, but running into problems...
 		stateLocs = {
 			"Alaska" : {
 				"lat" : 61.17267192672637,
