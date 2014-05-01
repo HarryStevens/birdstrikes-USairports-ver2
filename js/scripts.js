@@ -43,7 +43,7 @@ function initializeMap() {
 		stylers : [{
 			visibility : 'off'
 		}]
-	},
+	},	
 	{
 		featureType : 'water',
 		elementType : 'all',
@@ -220,8 +220,8 @@ function changeMap_state() {
 				"zoom" : 6
 			},
 			"New Jersey" : {
-				"lat" : 0.27055132431923,  
-				"lng" : -74.53657215078124,
+				"lat" : 40.409768023835944,   
+				"lng" : -74.51136463124999,
 				"zoom" : 7
 			},
 			"New York" : {
