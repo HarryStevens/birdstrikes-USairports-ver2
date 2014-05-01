@@ -38,9 +38,17 @@ function initializeMap() {
 		featureType : 'land',
 		elementType : 'all',
 		stylers : [{
-			saturation : -80
+			saturation : -90
 		}]
-	}, {
+	},
+	     {
+          featureType: 'road.highway',
+          elementType: 'all',
+          stylers: [
+            { visibility: 'off' }
+          ]
+        },
+	 {
 		featureType : 'road.arterial',
 		elementType : 'all',
 		stylers : [{
@@ -111,30 +119,159 @@ function changeMap_state() {
 	var whereClause;
 	var stateName;
 	var stateLocs;
+	var stateLat;
+	var stateLng;
+	var stateZoom;
 	var searchString = $("#search-string_state").val();
 	if (searchString != '--Select--') {
 		whereClause = "'State' = '" + searchString + "'";
-		stateName = $( "#search-string_state option:selected" ).text();
-		
-		//Trying to get state locations to update dynamically, but running into problems...
+		stateName = $("#search-string_state option:selected").text();
+
+		//JSON for state locations
 		stateLocs = {
 			"Alaska" : {
-				"lat" : 61.17267192672637,
+				"lat" : 62.17267192672637,
 				"lng" : -150.22962635,
-				"zoom" : 6
+				"zoom" : 5
 			},
 			"Arizona" : {
 				"lat" : 34.05315398991166,
 				"lng" : -112.09058826406249,
+				"zoom" : 6
+			},
+			"California" : {
+				"lat" :	35.61313610437187,
+				"lng" :  -117.60023181874999,
+				"zoom" : 5
+			},
+			"Colorado" : {
+				"lat" : 39.040983266931924, 
+				"lng" : -105.27357166249999,
+				"zoom" : 6
+			},
+			"District of Columbia" : {
+				"lat" : 38.78774020556518, 
+				"lng" : -77.17329090078124,
+				"zoom" : 9
+			},
+			"Florida" : {
+				"lat" : 28.08583517704441, 
+				"lng" :-81.41401355703124,
+				"zoom" : 6
+			},
+			"Georgia" : {
+				"lat" : 32.85125125266963, 
+				"lng" : -82.85322254140624,
+				"zoom" : 7
+			},
+			"Hawaii" : {
+				"lat" : 20.5549254702272, 
+				"lng" : -155.53876941640624,
+				"zoom" : 7
+			},
+			"Illinois" : {
+				"lat" : 39.17205679668551, 
+				"lng" : -87.93989246328124,
+				"zoom" : 6
+			},
+			"Kansas" : {
+				"lat" : 38.25051301331366, 
+				"lng" : -98.43183582265624,
+				"zoom" : 7
+			},
+			"Maryland" : {
+				"lat" : 38.650592020360776, 
+				"lng" : -75.89887683828124,
+				"zoom" : 7
+			},
+			"Massachusetts" : {
+				"lat" : 42.34173144078288, 
+				"lng" : -72.59199207265624,
+				"zoom" : 7
+			},
+			"Michigan" : {
+				"lat" : 43.452355299228486, 
+				"lng" : -83.96284168203124,
+				"zoom" : 6
+			},
+			"Minnesota" : {
+				"lat" : 46.118403357943215,  
+				"lng" : -93.96040027578124,
+				"zoom" : 6
+			},
+			"Missouri" : {
+				"lat" : 38.08640214682979,  
+				"lng" : -91.69721668203124,
+				"zoom" : 6
+			},
+			"Nevada" : {
+				"lat" : 37.48296048342987,  
+				"lng" : -116.49335926015624,
+				"zoom" : 6
+			},
+			"New Jersey" : {
+				"lat" : 0.27055132431923,  
+				"lng" : -74.53657215078124,
+				"zoom" : 7
+			},
+			"New York" : {
+				"lat" : 40.73158114567722,  
+				"lng" : -73.95567005117186,
+				"zoom" : 10
+			},
+			"North Carolina" : {
+				"lat" : 35.45276653557984, 
+				"lng" : -78.84458606679686,
+				"zoom" : 7
+			},
+			"Ohio" : {
+				"lat" : 39.952842887936825, 
+				"lng" : -82.39317005117186,
+				"zoom" : 7
+			},
+			"Oregon" : {
+				"lat" : 44.891813597856725,  
+				"lng" : -121.65830676992186,
+				"zoom" : 6
+			},
+			"Pennsylvania" : {
+				"lat" : 39.826398881350656, 
+				"lng" : -76.18589466054686,
+				"zoom" : 7
+			},
+			"Tennessee" : {
+				"lat" : 35.336340313027286,  
+				"lng" : -87.15025012929686,
+				"zoom" : 7
+			},
+			"Utah" : {
+				"lat" : 39.16513624755324, 
+				"lng" : -112.06724231679686,
+				"zoom" : 6
+			},
+			"Virginia" : {
+				"lat" : 38.226243588641914,  
+				"lng" : -78.37217395742186,
+				"zoom" : 7
+			},
+			"Washington" : {
+				"lat" : 46.98862284606915,  
+				"lng" : -120.71348255117186,
 				"zoom" : 7
 			}
-		};
+		};			
+		
+		stateLat = stateLocs[stateName].lat;
+		stateLng = stateLocs[stateName].lng;
+		stateZoom = stateLocs[stateName].zoom;
+
+
+	} else {
+		stateLat = 36.58072594811134;
+		stateLng = -95.03431384999999;
+		stateZoom = 4;
 	}
-	console.log(stateName);
-	console.log(stateLocs);
-	console.log(stateLocs.stateName);
-	console.log(stateLocs.Alaska);
-	
+
 	layer_0.setOptions({
 		query : {
 			select : "col10",
@@ -142,16 +279,48 @@ function changeMap_state() {
 			where : whereClause
 		}
 	});
-	layer_0.map.setCenter(new google.maps.LatLng(36.58072594811134, -95.03431384999999));
-	layer_0.map.setZoom(4);
+	layer_0.map.setCenter(new google.maps.LatLng(stateLat, stateLng));
+	layer_0.map.setZoom(stateZoom);
 }
 
 //Updates map based on service area selection
 function changeMap_area() {
 	var whereClause;
+	var areaName;
+	var areaLocs;
+	var areaLat;
+	var areaLng;
+	var areaZoom;
 	var searchString = $("#search-string_area").val();
 	if (searchString != '--Select--') {
 		whereClause = "'Service Area' = '" + searchString + "'";
+		areaName = $("#search-string_area option:selected").text();
+
+		//JSON for area locations
+		areaLocs = {
+			"Eastern" : {
+				"lat" : 37.90187792229758, 
+				"lng" : -70.65977161367186,
+				"zoom" : 5
+			},
+			"Central" : {
+				"lat" : 39.00310778756596, 
+				"lng" : -92.19297473867186,
+				"zoom" : 5
+			},
+			"Western" : {
+				"lat" :	40.77319393665586, 
+				"lng" :  -116.36289661367186,
+				"zoom" : 5
+			}
+		};
+		areaLat = areaLocs[areaName].lat;
+		areaLng = areaLocs[areaName].lng;
+		areaZoom = areaLocs[areaName].zoom;
+	} else {
+		areaLat = 36.58072594811134;
+		areaLng = -95.03431384999999;
+		areaZoom = 4;
 	}
 	layer_0.setOptions({
 		query : {
@@ -160,6 +329,8 @@ function changeMap_area() {
 			where : whereClause
 		}
 	});
+	layer_0.map.setCenter(new google.maps.LatLng(areaLat, areaLng));
+	layer_0.map.setZoom(areaZoom);
 }
 
 /*
