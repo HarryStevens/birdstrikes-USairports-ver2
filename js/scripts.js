@@ -32,10 +32,23 @@ function initializeMap() {
 
 	//Styles map to reduce saturation and remove unnecessary elements
 	var style = [{
-		featureType : 'land',
+		featureType : 'landscape',
 		elementType : 'all',
 		stylers : [{
 			saturation : -90
+		}]
+	},{
+		featureType : 'landscape.natural',
+		elementType : 'all',
+		stylers : [{
+			visibility : 'off'
+		}]
+	},
+	{
+		featureType : 'water',
+		elementType : 'all',
+		stylers : [{
+			saturation : -30
 		}]
 	},
 	     {
