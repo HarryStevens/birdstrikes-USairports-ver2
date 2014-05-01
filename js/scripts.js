@@ -24,12 +24,14 @@ function initializeMap() {
 	//Updates global var map with info about the div style and additional options for zoom and lat long center
 	map = new google.maps.Map(mapDiv, {
 		center : new google.maps.LatLng(36.58072594811134, -95.03431384999999),
-		zoom : 4
+		zoom : 4,
+		streetViewControl : false,
+		panControl : false,
+		zoomControlOptions : {
+			style : google.maps.ZoomControlStyle.LARGE,
+			position : google.maps.ControlPosition.LEFT_BOTTOM
+		}
 	});
-
-	//Places legend on map
-	//map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend-open'));
-	//map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(document.getElementById('googft-legend'));
 
 	//Styles map to reduce saturation and remove unnecessary elements
 	var style = [{
@@ -38,7 +40,7 @@ function initializeMap() {
 		stylers : [{
 			saturation : -80
 		}]
-	},  {
+	}, {
 		featureType : 'road.arterial',
 		elementType : 'all',
 		stylers : [{
@@ -88,26 +90,10 @@ function initializeMap() {
 	});
 }
 
-//Updates map based on city selection
-function changeMap_city() {
-	var whereClause;
-	var searchString = document.getElementById('search-string_city').value.replace(/'/g, "\\'");
-	if (searchString != '--Select--') {
-		whereClause = "'City' = '" + searchString + "'";
-	}
-	layer_0.setOptions({
-		query : {
-			select : "col10",
-			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
-			where : whereClause
-		}
-	});
-}
-
 //Updates map based on level selection
 function changeMap_level() {
 	var whereClause;
-	var searchString = document.getElementById('search-string_level').value.replace(/'/g, "\\'");
+	var searchString = $("#search-string_level").val();
 	if (searchString != '--Select--') {
 		whereClause = "'Birdstrike_Rating' = '" + searchString + "'";
 	}
@@ -116,17 +102,38 @@ function changeMap_level() {
 			select : "col10",
 			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
 			where : whereClause
-		}
+		},
 	});
 }
 
 //Updates map based on state selection
 function changeMap_state() {
 	var whereClause;
-	var searchString = document.getElementById('search-string_state').value.replace(/'/g, "\\'");
+	var stateName;
+	var stateLocs;
+	var searchString = $("#search-string_state").val();
 	if (searchString != '--Select--') {
 		whereClause = "'State' = '" + searchString + "'";
+		stateName = $( "#search-string_state option:selected" ).text();
+		stateLocs = {
+			"Alaska" : {
+				"lat" : 61.17267192672637,
+				"lng" : -150.22962635,
+				"zoom" : 6
+			},
+			"Arizona" : {
+				"lat" : 34.05315398991166,
+				"lng" : -112.09058826406249,
+				"zoom" : 7
+			}
+		};
 	}
+		
+	console.log(stateName);
+	console.log(stateLocs);
+	console.log(stateLocs.stateName);
+	console.log(stateLocs.Alaska);
+	
 	layer_0.setOptions({
 		query : {
 			select : "col10",
@@ -134,12 +141,14 @@ function changeMap_state() {
 			where : whereClause
 		}
 	});
+	layer_0.map.setCenter(new google.maps.LatLng(36.58072594811134, -95.03431384999999));
+	layer_0.map.setZoom(4);
 }
 
 //Updates map based on service area selection
 function changeMap_area() {
 	var whereClause;
-	var searchString = document.getElementById('search-string_area').value.replace(/'/g, "\\'");
+	var searchString = $("#search-string_area").val();
 	if (searchString != '--Select--') {
 		whereClause = "'Service Area' = '" + searchString + "'";
 	}
@@ -152,21 +161,41 @@ function changeMap_area() {
 	});
 }
 
+/*
 //Updates map based on region selection
 function changeMap_region() {
-	var whereClause;
-	var searchString = document.getElementById('search-string_region').value.replace(/'/g, "\\'");
-	if (searchString != '--Select--') {
-		whereClause = "'Region' = '" + searchString + "'";
-	}
-	layer_0.setOptions({
-		query : {
-			select : "col10",
-			from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
-			where : whereClause
-		}
-	});
+var whereClause;
+var searchString = document.getElementById('search-string_region').value.replace(/'/g, "\\'");
+if (searchString != '--Select--') {
+whereClause = "'Region' = '" + searchString + "'";
 }
+layer_0.setOptions({
+query : {
+select : "col10",
+from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+where : whereClause
+}
+});
+}
+*/
+
+/*
+//Updates map based on city selection
+function changeMap_city() {
+var whereClause;
+var searchString = document.getElementById('search-string_city').value.replace(/'/g, "\\'");
+if (searchString != '--Select--') {
+whereClause = "'City' = '" + searchString + "'";
+}
+layer_0.setOptions({
+query : {
+select : "col10",
+from : "1SopmxcZt8wuGlLJF4vHXg3deZ-mgu5djQBetwJBu",
+where : whereClause
+}
+});
+}
+*/
 
 //This is similar to document ready (though not identical) and does not use jQuery
 google.maps.event.addDomListener(window, 'load', initializeMap);
