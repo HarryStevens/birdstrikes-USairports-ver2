@@ -130,7 +130,6 @@ function changeMap_state() {
 			}
 		};
 	}
-		
 	console.log(stateName);
 	console.log(stateLocs);
 	console.log(stateLocs.stateName);
