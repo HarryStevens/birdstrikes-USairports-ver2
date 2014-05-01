@@ -27,10 +27,7 @@ function initializeMap() {
 		zoom : 4,
 		streetViewControl : false,
 		panControl : false,
-		zoomControlOptions : {
-			style : google.maps.ZoomControlStyle.LARGE,
-			position : google.maps.ControlPosition.LEFT_BOTTOM
-		}
+		mapTypeControl: false
 	});
 
 	//Styles map to reduce saturation and remove unnecessary elements
@@ -243,6 +240,11 @@ function changeMap_state() {
 				"lat" : 35.336340313027286,  
 				"lng" : -87.15025012929686,
 				"zoom" : 7
+			},
+			"Texas" : {
+				"lat" : 31.85940404545869,  
+				"lng" : -99.38489978749999,
+				"zoom" : 6
 			},
 			"Utah" : {
 				"lat" : 39.16513624755324, 
